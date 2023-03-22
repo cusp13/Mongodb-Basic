@@ -1,0 +1,52 @@
+// Connecting mongodb with nodejs
+const mongoose = require("mongoose");
+
+mongoose.connect("mongodb://localhost:27017/Sample",{useNewUrlParser:true,useUnifiedTopology:true}).then(()=>{
+    console.log("Connected")
+}).catch((err)=>{
+   console.log(err);
+})
+// Definiting the schema of database
+const student = mongoose.Schema({
+    name:String,
+    workout:Boolean,
+    height:Number
+})
+//First meathod for creating data in data base
+
+const Student = mongoose.model("Student",student);
+const adder = async () =>{
+    const ss = new Student({
+        name:"badal",
+        workout:true,
+        height: 6,
+    })
+    await ss.save()
+}
+adder();
+
+// Second method
+const adder = async()=>{
+    const ss = await Student.create({
+        name:"Abhi",
+        workout:true,
+        height:6
+    });
+}
+adder();
+
+// Reading the database
+const adder = async()=>{
+    const ss = await Student.find();
+    console.log(ss);
+}
+adder();
+// find comparison opertors
+const adder = async()=>{
+    // const ss = await Student.find({height:{$eq:6}}); give thode whose height is =6
+    // const ss = await Student.find({height:{$gt:6}}) // give height >6;
+    // const ss = await Student.find({height:{$in:[4,5]}}) //give in between 4 and 5
+    const ss = await Student.find({height:{$nin:[4,5]}})
+    console.log(ss);
+}
+
